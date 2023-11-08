@@ -9,6 +9,7 @@ import android.hardware.usb.*
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
+import io.flutter.plugin.common.MethodChannel
 import java.nio.charset.Charset
 import java.util.*
 
@@ -26,15 +27,17 @@ class USBPrinterAdapter {
     private var mUsbDeviceConnection: UsbDeviceConnection? = null
     private var mUsbInterface: UsbInterface? = null
     private var mEndPoint: UsbEndpoint? = null
+    private lateinit var chanel : MethodChannel
 
     private val ACTION_USB_PERMISSION = "app.mylekha.client.flutter_usb_printer.USB_PERMISSION"
 
 
 
 
-    fun getInstance(): USBPrinterAdapter? {
+    fun getInstance(c: MethodChannel): USBPrinterAdapter? {
         if (mInstance == null) {
             mInstance = this;
+            chanel = c
         }
         return mInstance
     }
@@ -64,6 +67,7 @@ class USBPrinterAdapter {
                 if (mUsbDevice != null) {
                     Toast.makeText(context, "USB device has been turned off", Toast.LENGTH_LONG)
                         .show()
+                    chanel.invokeMethod("disconnect", null)
                     closeConnectionIfExists()
                 }
             }

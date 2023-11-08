@@ -30,7 +30,7 @@ class FlutterUsbPrinterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_usb_printer")
     channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
-    adapter = USBPrinterAdapter().getInstance()
+    adapter = USBPrinterAdapter().getInstance(channel)
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
