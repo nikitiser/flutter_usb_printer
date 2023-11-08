@@ -5,14 +5,14 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 
 class FlutterUsbPrinter {
-  static const MethodChannel _channel =
+  static const MethodChannel channel =
       const MethodChannel('flutter_usb_printer');
 
   /// [getUSBDeviceList]
   /// get list of available usb device on android
   static Future<List<Map<String, dynamic>>> getUSBDeviceList() async {
     if (Platform.isAndroid) {
-      List<dynamic> devices = await _channel.invokeMethod('getUSBDeviceList');
+      List<dynamic> devices = await channel.invokeMethod('getUSBDeviceList');
       print(devices);
       var result = devices
           .cast<Map<dynamic, dynamic>>()
@@ -31,14 +31,14 @@ class FlutterUsbPrinter {
       "vendorId": vendorId,
       "productId": productId
     };
-    final bool? result = await _channel.invokeMethod('connect', params);
+    final bool? result = await channel.invokeMethod('connect', params);
     return result;
   }
 
   /// [close]
   /// close the connection after print with usb printer
   Future<bool?> close() async {
-    final bool? result = await _channel.invokeMethod('close');
+    final bool? result = await channel.invokeMethod('close');
     return result;
   }
 
@@ -46,7 +46,7 @@ class FlutterUsbPrinter {
   /// print text
   Future<bool?> printText(String text) async {
     Map<String, dynamic> params = {"text": text};
-    final bool? result = await _channel.invokeMethod('printText', params);
+    final bool? result = await channel.invokeMethod('printText', params);
     return result;
   }
 
@@ -54,7 +54,7 @@ class FlutterUsbPrinter {
   /// print raw text
   Future<bool?> printRawText(String text) async {
     Map<String, dynamic> params = {"raw": text};
-    final bool? result = await _channel.invokeMethod('printRawText', params);
+    final bool? result = await channel.invokeMethod('printRawText', params);
     return result;
   }
 
@@ -62,7 +62,7 @@ class FlutterUsbPrinter {
   /// write data byte
   Future<bool?> write(Uint8List data) async {
     Map<String, dynamic> params = {"data": data};
-    final bool? result = await _channel.invokeMethod('write', params);
+    final bool? result = await channel.invokeMethod('write', params);
     return result;
   }
 }
